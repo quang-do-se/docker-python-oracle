@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  python:
+    build:
+      context: .
+      dockerfile: ./Dockerfiles/python.Dockerfile
+    container_name: python-oracle
+    volumes:
+      - ./python:/scripts
+      - /usr/local/adm/config/tomcat/oracle_wallets:/usr/local/adm/config/tomcat/oracle_wallets:ro
+    environment:
+      DB_URL: ${DB_URL}
+    # cap_add:
+    #   - NET_ADMIN
