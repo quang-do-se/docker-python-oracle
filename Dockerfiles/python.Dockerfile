@@ -25,6 +25,7 @@ ENV LD_LIBRARY_PATH=/oracle/client
 ENV TNS_ADMIN=/usr/local/adm/config/tomcat/oracle_wallets/lms
 
 COPY loop.sh /
+RUN chmod +x /loop.sh
 
 # Use this shell script to keep container running in background and exit gracefully with Docker kill signal
 # Shell script can handle kill signal better than build-in commands like tail and cat
