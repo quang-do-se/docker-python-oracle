@@ -4,6 +4,10 @@
 ## Run
 
 ``` shell
+git clone git@github.com:quang-do-se/docker-python-oracle.git
+
+cd docker-python-oracle
+
 docker build --no-cache --progress=plain -t python-oracle -f Dockerfiles/python.Dockerfile .
 
 docker container run -d \
@@ -33,6 +37,10 @@ docker rm python-oracle
 - Note: you can run `cp .env-template .env`, store db connection string in .env, retrieve it using ${DB_URL}
 
 ``` shell
+git clone git@github.com:quang-do-se/docker-python-oracle.git
+
+cd docker-python-oracle
+
 docker-compose up -d --build
 ```
 
