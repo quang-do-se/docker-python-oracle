@@ -8,12 +8,15 @@ RUN apt update \
   && apt-get clean autoclean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+ARG ORACLE_DOWNLOAD_URL="https://download.oracle.com/otn_software/linux/instantclient/211000/instantclient-basiclite-linux.x64-21.1.0.0.0.zip"
+ARG ORACLE_CHECK_SUM='4212154228'
+
 RUN set -o errexit -o nounset \
   && echo "Downloading Oracle Instant Client" \
-  && wget --no-verbose --output-document=/tmp/client.zip "https://download.oracle.com/otn_software/linux/instantclient/211000/instantclient-basiclite-linux.x64-21.1.0.0.0.zip" \
+  && wget --no-verbose --output-document=/tmp/client.zip ${ORACLE_DOWNLOAD_URL} \
   \
   && echo "Test checksum" \
-  && if [ $(cksum /tmp/client.zip | cut -f 1 -d' ') != 4212154228 ]; then echo 'Failed checksum'; exit 1; fi \
+  && if [ $(cksum /tmp/client.zip | cut -f 1 -d' ') != ${ORACLE_CHECK_SUM} ]; then echo 'Failed checksum'; exit 1; fi \
   \
   && echo "Installing Oracle Instant Client" \
   && mkdir /oracle \
@@ -23,6 +26,8 @@ RUN set -o errexit -o nounset \
 
 ENV LD_LIBRARY_PATH=/oracle/client
 ENV TNS_ADMIN=/usr/local/adm/config/tomcat/oracle_wallets/lms
+ENV TZ="America/Denver"
+ENV ORA_SDTZ="America/Denver"
 
 COPY loop.sh /
 RUN chmod +x /loop.sh

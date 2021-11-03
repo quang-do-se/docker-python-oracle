@@ -11,15 +11,16 @@ cd docker-python-oracle
 docker build --no-cache --progress=plain -t python-oracle -f Dockerfiles/python.Dockerfile .
 
 docker container run -d \
-  -v $(pwd)/python:/scripts \
-  -v /usr/local/adm/config/tomcat/oracle_wallets:/usr/local/adm/config/tomcat/oracle_wallets:ro \
-  --name python-oracle \
-  python-oracle
+-v $(pwd)/python:/scripts \
+-v /usr/local/adm/config/tomcat/oracle_wallets:<oracle-wallet-location-on-your-machine>:ro \
+--name python-oracle \
+python-oracle
 
 docker exec -it python-oracle /bin/bash
 
-python /scripts/test-oracle-connection.py --url="<user>/<password>@<tns-name>"
+python /scripts/test-oracle-connection.py --tns="<ORACLE_TNS_NAME>"
 ```
+
 ## Clean up
 
 ``` shell
@@ -34,7 +35,6 @@ docker rm python-oracle
 
 ## Run
 
-- Note: you can run `cp .env-template .env`, store db connection string in .env, retrieve it using ${DB_URL}
 
 ``` shell
 git clone git@github.com:quang-do-se/docker-python-oracle.git
@@ -48,18 +48,37 @@ docker-compose up -d --build
 
 docker exec -it python-oracle /bin/bash
 
-python /scripts/test-oracle-connection.py --url="${DB_URL}"
+python /scripts/test-oracle-connection.py --tns="<ORACLE_TNS_NAME>"
 
 ```
 
 OR
 
 ``` shell
-docker exec -it python-oracle sh -c 'python /scripts/test-oracle-connection.py --url="${DB_URL}"'
+docker exec -it python-oracle sh -c 'python /scripts/test-oracle-connection.py --tns="<ORACLE_TNS_NAME>"
 
 ```
+
+## Testing manually
+
+- Run below commands in Python interpreter:
+
+``` shell
+import cx_Oracle
+
+connection = cx_Oracle.connect(user="<your-user>", password="<your-password>", dsn="<dns>")
+
+cursor = connection.cursor()
+
+cursor.execute('select sysdate from dual').fetchall()
+```
+
 ## Clean up
 
 ``` shell
 docker-compose down
 ```
+
+## References
+
+- Environment Variables for Oracle Instant Client: https://docs.oracle.com/en/database/oracle/oracle-database/21/lacli/environment-variables-instant-client.html#GUID-BA8FB14E-1463-4F6A-9926-4F9F696E52D0
