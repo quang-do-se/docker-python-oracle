@@ -66,7 +66,7 @@ docker exec -it python-oracle sh -c 'python /scripts/test-oracle-connection.py -
 ``` shell
 import cx_Oracle
 
-connection = cx_Oracle.connect(user="<your-user>", password="<your-password>", dsn="<dns>")
+connection = cx_Oracle.connect(user="<your-user>", password="<your-password>", dsn="<dsn>")
 
 cursor = connection.cursor()
 

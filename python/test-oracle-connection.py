@@ -34,7 +34,7 @@ if __name__ == '__main__':
   connection = cx_Oracle.connect(
     user="<your-user>",
     password="<your-password>",
-    dsn="<dns>")
+    dsn="<dsn>")
   '''
 
   cursor = connection.cursor()
